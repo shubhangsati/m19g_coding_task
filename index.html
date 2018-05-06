@@ -4,14 +4,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>M19G Internship Coding Task</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
     </head>
 
     <body style="height: 100%;">
-        <textarea name="output" id="output" style="height: 50%; width: 100%;"></textarea>
+        <textarea name="output" id="output" style="height: 50%; width: 100%; resize: none; font-size: 30px;"></textarea>
+        <button style="height: 50%; width: 100%; background: linear-gradient(white, lightblue); font-size: 100px;" onclick="process(event);">
+            Click Me!
+        </button>
+        <script src="multiply.js"></script>
         <script>
             var textbox = document.getElementById("output");
             
-            var Module = {
+            /*var Module = {
                 'print' : function (text) {
                     textbox.value += "[+] " + text + "\n";
                 },
@@ -19,9 +29,17 @@
                 'printErr' : function(text) {
                     console.log("[-] " + text + "\n");
                 },
-            };
+            };*/
+
+            const multiply = Module.cwrap('multiply', 'number', ['number', 'number']);
+
+            function process(event) {
+                var x = event.clientX;
+                var y = event.clientY;
+                var result = multiply(x, y);
+                textbox.value += "[+] multiplying " + x + " and " + y + " gives " + result + "\n";
+            }
             
         </script>
-        <script src="multiply.js"></script>
     </body>
 </html>
