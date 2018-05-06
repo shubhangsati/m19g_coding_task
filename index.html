@@ -19,7 +19,10 @@
         </button>
         <script src="multiply.js"></script>
         <script>
-            var textbox = document.getElementById("output");
+
+            function output(text) {
+                document.getElementById("output").value += text + "\n";
+            }
             
             /*var Module = {
                 'print' : function (text) {
@@ -37,7 +40,8 @@
                 var x = event.clientX;
                 var y = event.clientY;
                 var result = multiply(x, y);
-                textbox.value += "[+] multiplying " + x + " and " + y + " gives " + result + "\n";
+                var text = "[+] multiplying " + x + " and " + y + " gives " + result;
+                output(text);
             }
             
         </script>
