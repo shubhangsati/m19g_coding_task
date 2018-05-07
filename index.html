@@ -26,6 +26,8 @@
                 textbox.value += text + "\n";
             }
 
+            Module = new Multiply();
+
             Module['print'] = function(text) {
                 textbox.value += "[+] " + text + "\n";
             }
@@ -38,13 +40,15 @@
             function process(event) {
                 var x = event.clientX;
                 var y = event.clientY;
-                var result = multiply(x, y);
-                output(result);
+                Module.then(function(Module){
+                    var result = multiply(x, y);
+                    output(result);
+                });
             }
             
         </script>
         <script>
-            //document.getElementsByTagName('button')[0].click();
+            document.getElementsByTagName('button')[0].click();
         </script>
     </body>
 </html>
