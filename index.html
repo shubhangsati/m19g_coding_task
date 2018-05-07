@@ -20,19 +20,18 @@
         <script src="multiply.js"></script>
         <script>
 
-            function output(text) {
-                document.getElementById("output").value += text + "\n";
-            }
-            
-            /*var Module = {
-                'print' : function (text) {
-                    textbox.value += "[+] " + text + "\n";
-                },
+            var textbox = document.getElementById("output");
 
-                'printErr' : function(text) {
-                    console.log("[-] " + text + "\n");
-                },
-            };*/
+            function output(text) {
+                textbox.value += text + "\n";
+            }
+
+            Module['print'] = function(text) {
+                textbox.value += "[+] " + text + "\n";
+            }
+            Module['printErr'] = function(text) {
+                console.log("[-] " + text + "\n");
+            }
 
             const multiply = Module.cwrap('multiply', 'number', ['number', 'number']);
 
@@ -45,7 +44,7 @@
             
         </script>
         <script>
-            document.getElementsByTagName('button')[0].click();
+            //document.getElementsByTagName('button')[0].click();
         </script>
     </body>
 </html>
