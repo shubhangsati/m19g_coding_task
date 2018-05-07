@@ -1,3 +1,6 @@
+var Multiply = function(Multiply) {
+  Multiply = Multiply || {};
+
 // The Module object: Our interface to the outside world. We import
 // and export values on it. There are various ways Module can be used:
 // 1. Not defined. We create it here
@@ -11,7 +14,7 @@
 // after the generated code, you will need to define   var Module = {};
 // before the code. Then that object will be used in the code, and you
 // can continue to use Module afterwards as well.
-var Module = typeof Module !== 'undefined' ? Module : {};
+var Module = typeof Multiply !== 'undefined' ? Multiply : {};
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
@@ -100,9 +103,7 @@ if (ENVIRONMENT_IS_NODE) {
 
   Module['arguments'] = process['argv'].slice(2);
 
-  if (typeof module !== 'undefined') {
-    module['exports'] = Module;
-  }
+  // MODULARIZE will export the module in the proper place outside, we don't need to export here
 
   process['on']('uncaughtException', function(ex) {
     // suppress ExitStatus exceptions from showing an error
@@ -6213,6 +6214,28 @@ if (!Module["ALLOC_NONE"]) Object.defineProperty(Module, "ALLOC_NONE", { get: fu
 
 
 
+// Modularize mode returns a function, which can be called to
+// create instances. The instances provide a then() method,
+// must like a Promise, that receives a callback. The callback
+// is called when the module is ready to run, with the module
+// as a parameter. (Like a Promise, it also returns the module
+// so you can use the output of .then(..)).
+Module['then'] = function(func) {
+  // We may already be ready to run code at this time. if
+  // so, just queue a call to the callback.
+  if (Module['calledRun']) {
+    func(Module);
+  } else {
+    // we are not ready to call then() yet. we must call it
+    // at the same time we would call onRuntimeInitialized.
+    var old = Module['onRuntimeInitialized'];
+    Module['onRuntimeInitialized'] = function() {
+      if (old) old();
+      func(Module);
+    };
+  }
+  return Module;
+};
 
 /**
  * @constructor
@@ -6417,3 +6440,13 @@ run();
 
 
 
+
+
+  return Multiply;
+};
+if (typeof exports === 'object' && typeof module === 'object')
+  module.exports = Multiply;
+else if (typeof define === 'function' && define['amd'])
+  define([], function() { return Multiply; });
+else if (typeof exports === 'object')
+  exports["Multiply"] = Multiply;
